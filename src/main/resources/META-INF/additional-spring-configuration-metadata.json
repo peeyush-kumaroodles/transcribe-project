@@ -1,0 +1,37 @@
+{"properties": [
+  {
+    "name": "com.behl.aws.s3.input-bucket-name",
+    "type": "java.lang.String",
+    "description": "A description for 'com.behl.aws.s3.input-bucket-name'"
+  },
+  {
+    "name": "com.behl.aws.s3.output-bucket-name",
+    "type": "java.lang.String",
+    "description": "A description for 'com.behl.aws.s3.output-bucket-name'"
+  },
+  {
+    "name": "com.aws.access-key",
+    "type": "java.lang.String",
+    "description": "A description for 'com.aws.access-key'"
+  },
+  {
+    "name": "com.aws.access-key",
+    "type": "java.lang.String",
+    "description": "A description for 'com.aws.access-key'"
+  },
+  {
+    "name": "com.aws.access-key",
+    "type": "java.lang.String",
+    "description": "A description for 'com.aws.access-key'"
+  },
+  {
+    "name": "com.aws.access-key",
+    "type": "java.lang.String",
+    "description": "A description for 'com.aws.access-key'"
+  },
+  {
+    "name": "com.aws.secret-access-key",
+    "type": "java.lang.String",
+    "description": "A description for 'com.aws.secret-access-key'"
+  }
+]}
