@@ -1,5 +1,4 @@
 package com.transcribe.configuration;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,12 +16,11 @@ import lombok.Data;
 @EnableConfigurationProperties(value = AwsCredentialProperties.class)
 public class AwsStorageConfiguration {
 	@Autowired
-	private final AwsCredentialProperties awsCredentialProperties;
-
+	private final AwsCredentialProperties AWSCREDENTIALPROPERTIES;
 	@Bean
 	public AmazonS3 amazonS3() {
-		AWSCredentials awsCredentials = new BasicAWSCredentials(awsCredentialProperties.getAccessKey(),
-				awsCredentialProperties.getSecretAccessKey());
+		AWSCredentials awsCredentials = new BasicAWSCredentials(AWSCREDENTIALPROPERTIES.getAccessKey(),
+				AWSCREDENTIALPROPERTIES.getSecretAccessKey());
 		return AmazonS3ClientBuilder.standard().withRegion(Regions.AP_SOUTH_1)
 				.withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
 	}

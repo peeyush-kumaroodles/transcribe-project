@@ -4,8 +4,12 @@ import java.io.InputStream;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public interface AudioToTextConversionService {
-	public InputStream convertAudioToText(final MultipartFile file, final String languageCode);
+import com.amazonaws.services.s3.model.S3Object;
 
-	public String constructS3Link(final MultipartFile file);
+public interface AudioToTextConversionService {
+	public InputStream convertAudioToText( final String languageCode);
+
+	public String getUrl();
+	
+	public S3Object retrieveTranscribedJson(final String jobName);
 }

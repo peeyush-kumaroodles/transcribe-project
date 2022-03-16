@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 @ConfigurationProperties(prefix = "com.aws")
 public class AmazonS3Properties{
-
-	AwsS3 amazonS3=new AwsS3();
+	private String inputBucketName;
+	private String outputBucketName;
 }
