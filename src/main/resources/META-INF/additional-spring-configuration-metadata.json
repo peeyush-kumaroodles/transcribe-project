@@ -33,5 +33,40 @@
     "name": "com.aws.secret-access-key",
     "type": "java.lang.String",
     "description": "A description for 'com.aws.secret-access-key'"
+  },
+  {
+    "name": "cloud.aws.stack.auto",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.aws.stack.auto'"
+  },
+  {
+    "name": "cloud.aws.region.auto",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.aws.region.auto'"
+  },
+  {
+    "name": "cloud.aws.region.static",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.aws.region.static'"
+  },
+  {
+    "name": "com.aws.input-bucket-name",
+    "type": "java.lang.String",
+    "description": "A description for 'com.aws.input-bucket-name'"
+  },
+  {
+    "name": "com.aws.output-bucket-name",
+    "type": "java.lang.String",
+    "description": "A description for 'com.aws.output-bucket-name'"
+  },
+  {
+    "name": "com.aws.secretaccesskey",
+    "type": "java.lang.String",
+    "description": "A description for 'com.aws.secretaccesskey'"
+  },
+  {
+    "name": "com.aws.accesskey",
+    "type": "java.lang.String",
+    "description": "A description for 'com.aws.accesskey'"
   }
 ]}

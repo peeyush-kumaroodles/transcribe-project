@@ -1,65 +1,112 @@
 package com.transcribe.serviceImpl;
 
-import java.io.InputStream;
-import java.util.Random;
-
+import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
-
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.transcribe.AmazonTranscribe;
+import com.amazonaws.services.transcribe.AmazonTranscribeClient;
+import com.amazonaws.services.transcribe.model.GetTranscriptionJobRequest;
+import com.amazonaws.services.transcribe.model.LanguageCode;
 import com.amazonaws.services.transcribe.model.Media;
+import com.amazonaws.services.transcribe.model.Settings;
 import com.amazonaws.services.transcribe.model.StartTranscriptionJobRequest;
+import com.amazonaws.services.transcribe.model.TranscriptionJob;
+import com.amazonaws.services.transcribe.model.TranscriptionJobStatus;
+import com.google.gson.Gson;
 import com.transcribe.dto.AmazonS3Properties;
-import com.transcribe.service.AudioToTextConversionService;
+import com.transcribe.dto.AmazonTranscription;
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import lombok.Data;
-import lombok.var;
 
 @Service
-@Data
 @EnableConfigurationProperties(AmazonS3Properties.class)
-public class AudioToTextConversionServiceImpl implements AudioToTextConversionService {
-
-	private final AmazonTranscribe AMAZONTRANSCRIBE;
+@Data
+public class AudioToTextConversionServiceImpl {
 	private final AmazonS3Properties AMAZONS3PROPERTIES;
 	private final AmazonS3 AMAZONS3;
+	private TranscriptionJob transcriptionJob;
+	@Autowired
+	private TransferManager transferManager;
+	@Autowired
+	private JsonToTextConversion jsonToTextConversion;
+	private String bucketName = "input-file-data";
+	
 
-	public InputStream convertAudioToText(final String languageCode) {
-		final var media = new Media();
-		media.setMediaFileUri(getUrl());
-		//final String jobName = randomJob(8);
+	private String endpointUrl = "https://s3.ap-south-1.amazonaws.com";
+	private static final Logger LOGGER = LoggerFactory.getLogger(AudioToTextConversionServiceImpl.class);
+
+	public String convertAudioToText(String fileName) {
+		String jsonToText = null;
+		AmazonTranscription transcription = null;
+		AmazonTranscribe transcribe = AmazonTranscribeClient.builder().withRegion("ap-south-1").build();
 		String jobName = System.currentTimeMillis() + "_" + "video.mp4";
+		Media media = new Media();
+		media.setMediaFileUri("https://input-file-data.s3.ap-south-1.amazonaws.com/Leads_Daily_Updates_02032022114532-trans.mp4"
+				);
 		StartTranscriptionJobRequest startTranscriptionJobRequest = new StartTranscriptionJobRequest();
-		startTranscriptionJobRequest.setLanguageCode(languageCode);
-		startTranscriptionJobRequest.setOutputBucketName(AMAZONS3PROPERTIES.getOutputBucketName());
+		startTranscriptionJobRequest.withLanguageCode(LanguageCode.HiIN);
 		startTranscriptionJobRequest.setTranscriptionJobName(jobName);
 		startTranscriptionJobRequest.setMedia(media);
-		AMAZONTRANSCRIBE.startTranscriptionJob(startTranscriptionJobRequest);
-		Boolean resultRetreived = false;
-		S3Object result = null;
-		while (!resultRetreived) {
-			result = retrieveTranscribedJson(jobName);
-			if (result != null)
-				resultRetreived = true;
-		}
-		return result.getObjectContent();
+		startTranscriptionJobRequest.withMediaFormat("mp4");
+		Settings settings = new Settings();
+		settings.withMaxSpeakerLabels(10).withShowSpeakerLabels(true);
+	//	startTranscriptionJobRequest.withMedia(media).withMediaSampleRateHertz(48000);
+		startTranscriptionJobRequest.withSettings(settings);
+		transcribe.startTranscriptionJob(startTranscriptionJobRequest);
+		GetTranscriptionJobRequest jobRequest = new GetTranscriptionJobRequest();
+		jobRequest.setTranscriptionJobName(jobName);
+		jsonToText = getTranscribedFileUri(fileName, jobRequest, settings, transcribe, jobRequest, transcription);
+		return jsonToText;
 	}
 
-	@Override
-	public String getUrl() {
-		return "https://input-file-data.s3.ap-south-1.amazonaws.com/Emma-Watson-English-Motivational-Status-Video.mp4";
+	public String getTranscribedFileUri(String fileName, GetTranscriptionJobRequest jobRequest, Settings settings,
+			AmazonTranscribe transcribe, GetTranscriptionJobRequest request, AmazonTranscription transcription) {
+		String uploadTranscribeJSONFile = null;
+		while (true) {
+			transcriptionJob = transcribe.getTranscriptionJob(jobRequest).getTranscriptionJob();
+			if (transcriptionJob.getTranscriptionJobStatus().equals(TranscriptionJobStatus.COMPLETED.name())) {
+				transcriptionJob.withSettings(settings);
+				transcription = this.downloadFromLink(transcriptionJob.getTranscript().getTranscriptFileUri());
+				break;
+			} else if (transcriptionJob.getTranscriptionJobStatus().equals(TranscriptionJobStatus.FAILED.name())) {
+				break;
+			}
+		}
+		uploadTranscribeJSONFile = uploadTranscribeJSONToTextFile(transcription);
+		return uploadTranscribeJSONFile;
 	}
-	
-	@Override
-	public S3Object retrieveTranscribedJson(final String jobName) {
+
+	private AmazonTranscription downloadFromLink(String uri) {
+		HttpResponse response = HttpRequest.get(uri).send();
+		String result = response.charset("UTF-8").bodyText();
+		Gson gson = new Gson();
+		return gson.fromJson(result, AmazonTranscription.class);
+	}
+
+	public String uploadTranscribeJSONToTextFile(AmazonTranscription transcription) {
 		try {
-			return AMAZONS3.getObject(AMAZONS3PROPERTIES.getOutputBucketName(), jobName + ".json");
-		} catch (AmazonS3Exception e) {
+			File transcribedTextFile = jsonToTextConversion.JsonToReadableTextFile(transcription);
+			if (transcribedTextFile != null && transcribedTextFile.isFile()) {
+				String textUniqueFileName = System.currentTimeMillis() + "readableTranscription.txt";
+				final PutObjectRequest requestObj = new PutObjectRequest(AMAZONS3PROPERTIES.getOutputBucketName(),
+						textUniqueFileName, transcribedTextFile);
+				Upload upload = transferManager.upload(requestObj);
+				upload.waitForCompletion();
+				transcribedTextFile.delete();
+				return endpointUrl + "/" + AMAZONS3PROPERTIES.getOutputBucketName() + "/" + textUniqueFileName;
+			}
+			return null;
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
 			return null;
 		}
 	}
-
-	
 }
