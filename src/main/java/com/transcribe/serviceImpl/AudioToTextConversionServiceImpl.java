@@ -49,7 +49,7 @@ public class AudioToTextConversionServiceImpl {
 		AmazonTranscribe transcribe = AmazonTranscribeClient.builder().withRegion("ap-south-1").build();
 		String jobName = System.currentTimeMillis() + "_" + "video.mp4";
 		Media media = new Media();
-		media.setMediaFileUri("https://input-file-data.s3.ap-south-1.amazonaws.com/Leads_Daily_Updates_02032022114532-trans.mp4"
+		media.setMediaFileUri("https://s3-ap-south-1.amazonaws.com/"+ bucketName +"/"+fileName
 				);
 		StartTranscriptionJobRequest startTranscriptionJobRequest = new StartTranscriptionJobRequest();
 		startTranscriptionJobRequest.withLanguageCode(LanguageCode.HiIN);
