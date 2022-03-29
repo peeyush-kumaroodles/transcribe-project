@@ -1,29 +1,19 @@
 package com.transcribe.serviceImpl;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.transcribe.dto.AmazonTranscription;
 import com.transcribe.dto.Item;
 import com.transcribe.dto.Segment;
 import com.transcribe.dto.SegmentItem;
-
 @Service
 public class JsonToTextConversion {
 	public File JsonToReadableTextFile(AmazonTranscription amazonTranscription) throws JsonMappingException, IOException {
-		PrintWriter out = new PrintWriter("readable_json_data.txt");
+		PrintWriter writer = new PrintWriter("readable_json_data.txt");
 		File file = new File("readable_json_data.txt");
-		//ObjectMapper objectMapper = new ObjectMapper();
-		//AmazonTranscription amazonTranscriptionObj = objectMapper.readValue(JSONfile, AmazonTranscription.class);
 		List<Item> items = amazonTranscription.getResults().getItems();
 		List<Segment> segments = amazonTranscription.getResults().getSpeaker_labels().getSegments();
 		for (Segment segment : segments) {
@@ -44,12 +34,11 @@ public class JsonToTextConversion {
 					}
 				}
 			}
-			
-			out.println("Speaker : " + segment.getSpeaker_label());
-			out.println("Content : " + content);
-			out.println();
+			writer.println("Speaker : " + segment.getSpeaker_label());
+			writer.println("Content : " + content);
+			writer.println();
 		}
-		out.close();
+		writer.close();
 		return file;
 	}
 
