@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -13,6 +14,7 @@ import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.transcribe.AmazonTranscribe;
 import com.amazonaws.services.transcribe.AmazonTranscribeClient;
 import com.amazonaws.services.transcribe.model.GetTranscriptionJobRequest;
+import com.amazonaws.services.transcribe.model.LanguageCode;
 import com.amazonaws.services.transcribe.model.Media;
 import com.amazonaws.services.transcribe.model.Settings;
 import com.amazonaws.services.transcribe.model.StartTranscriptionJobRequest;
@@ -42,23 +44,29 @@ public class AudioToTextConversionServiceImpl {
 	private String endpointUrl = "https://s3.ap-south-1.amazonaws.com";
 	private static final Logger LOGGER = LoggerFactory.getLogger(AudioToTextConversionServiceImpl.class);
 	
+	@Scheduled(fixedRate = 10000 ,initialDelay = 10000)
+	//@Scheduled(cron = "1 * * * * *")
+	public void fetchData() {
+		List<VideoLinks> list=transcribeRepository.findAll();
+		for (VideoLinks videoLinks : list) {
+			System.out.println(list);
+		}
+	}
+	//@Scheduled(cron = "* 23 * * * *")
 	public boolean getTranscribe() {
 		List<VideoLinks> videoLinkObj = transcribeRepository.findByIsAudioTranscribe(false);
 		for (VideoLinks links : videoLinkObj) {
 			String link = links.getLink();
 			String fileName = link.substring(link.lastIndexOf('/') + 1);
 			String fileTranscriptionURL = convertAudioToText(fileName);
-			if (fileTranscriptionURL != null) {
 				links.setAudioTranscribe(true);
 				links.setTranscribedFileLink(fileTranscriptionURL);
 				transcribeRepository.save(links);
 				return true;
-			}
 		}
 		return false;
 	}
 	public String convertAudioToText(String fileName) {
-		
 		String jsonToText = null;
 		AmazonTranscription transcription = null;
 		AmazonTranscribe transcribe = AmazonTranscribeClient.builder().withRegion("ap-south-1").build();
@@ -67,7 +75,7 @@ public class AudioToTextConversionServiceImpl {
 		media.setMediaFileUri("https://"+bucketName+". s3.ap-south-1.amazonaws.com/"+ bucketName +"/"+fileName
 				);
 		StartTranscriptionJobRequest startTranscriptionJobRequest = new StartTranscriptionJobRequest();
-	//	startTranscriptionJobRequest.withLanguageCode(LanguageCode.EnUS);
+		startTranscriptionJobRequest.withLanguageCode(LanguageCode.EnUS);
 		startTranscriptionJobRequest.setIdentifyLanguage(true);
 		startTranscriptionJobRequest.setTranscriptionJobName(jobName);
 		startTranscriptionJobRequest.setMedia(media);
@@ -106,7 +114,6 @@ public class AudioToTextConversionServiceImpl {
 		return gson.fromJson(result, AmazonTranscription.class);
 	
 	}
-	
 	public String uploadTranscribeJSONToTextFile(AmazonTranscription transcription) {
 		try {
 			File transcribedTextFile = jsonToTextConversion.JsonToReadableTextFile(transcription);

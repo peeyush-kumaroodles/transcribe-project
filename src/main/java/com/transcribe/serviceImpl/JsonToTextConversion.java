@@ -41,5 +41,4 @@ public class JsonToTextConversion {
 		writer.close();
 		return file;
 	}
-
 }
