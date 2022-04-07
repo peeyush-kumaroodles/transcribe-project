@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpHeaders;
 
+import com.transcribe.dto.VideoLinks;
 import com.transcribe.serviceImpl.AudioToTextConversionServiceImpl;
 @RestController
 public class TranscribeController {
@@ -20,6 +21,17 @@ public class TranscribeController {
 	return ResponseEntity.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=result.json").body(result);
 	}
+	
+	@GetMapping("/video_LinkApi")
+	public ResponseEntity<?> useRestTemplate() {
+		ResponseEntity<VideoLinks> videoEntity;
+		videoEntity = audioToTextConversionServiceImpl.exchangeMethodOfRestTemplate();
+		if(videoEntity!=null) {
+			return new ResponseEntity<String>(HttpStatus.OK);
+		}else
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	@GetMapping(value = "/data")
 	public ResponseEntity<?> getLink(){
 	boolean result=  audioToTextConversionServiceImpl.getTranscribe();

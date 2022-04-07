@@ -10,14 +10,11 @@ import lombok.Data;
 @Document(value = "video_links")
 public class VideoLinks {
 	@Id
-	private String id;
-	private long userId;
-	private String userType;
-	private String messageId;
-	private String roomId;
-	private String  roomType;
-	private LocalDateTime uploadingDateTime;
-	private String link;
+	String link;
+	String messageId;
+	String roomAccessKey;
+	String roomId;
+	String roomType;
 	private boolean isAudioTranscribe = false;
 	private String transcribedFileLink;
 }

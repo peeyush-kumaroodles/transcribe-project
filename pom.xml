@@ -9,7 +9,8 @@
 		<version>2.4.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
+	<!-- https://mvnrepository.com/artifact/com.novemberain/quartz-mongodb -->
+
 	<groupId>com.example</groupId>
 	<artifactId>transcribe-project</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -18,27 +19,78 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+	
 	<dependencies>
-	<dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-	
-
-<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb -->
-
-
-<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+<!-- https://mvnrepository.com/artifact/io.fluidsonic.mirror/quartz-mongodb -->
 <dependency>
-    <groupId>javax.xml.bind</groupId>
-    <artifactId>jaxb-api</artifactId>
-    <version>2.3.1</version>
+    <groupId>io.fluidsonic.mirror</groupId>
+    <artifactId>quartz-mongodb</artifactId>
+    <version>2.2.0-rc2</version>
 </dependency>
 
-	
+		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.1.13</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-ui</artifactId>
+    <version>1.2.32</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-sync -->
+<dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongodb-driver-sync</artifactId>
+    <version>4.0.5</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.novemberain/quartz-mongodb -->
+<!-- https://mvnrepository.com/artifact/com.novemberain/quartz-mongodb -->
+
+		<!-- https://mvnrepository.com/artifact/com.novemberain/quartz-mongodb -->
+<!-- https://mvnrepository.com/artifact/com.novemberain/quartz-mongodb -->
+<!-- https://mvnrepository.com/artifact/com.novemberain/quartz-mongodb -->
+
+
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-quartz</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -66,14 +118,15 @@
 			<artifactId>aws-java-sdk-transcribe</artifactId>
 			<version>1.12.58</version>
 		</dependency>
-	
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

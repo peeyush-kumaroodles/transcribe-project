@@ -1,8 +1,11 @@
 package com.transcribe.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -43,6 +46,11 @@ public class AwsConfiguration {
 				.withMultipartUploadThreshold(16384L).withMultipartCopyPartSize(5120L)
 				//.withMultipartCopyThreshold(102400L).withExecutorFactory(() -> createExecutorService(20))
 				.build();
+	}
+	
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
 	}
 
 }

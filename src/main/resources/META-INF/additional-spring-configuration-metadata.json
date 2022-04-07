@@ -1,5 +1,4 @@
 {"properties": [
- 
   {
     "name": "com.aws.access-key",
     "type": "java.lang.String",
@@ -59,5 +58,250 @@
     "name": "com.aws.accesskey",
     "type": "java.lang.String",
     "description": "A description for 'com.aws.accesskey'"
+  },
+  {
+    "name": "org.quartz.scheduler.mongoOptionWriteConcernTimeoutMillis",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.scheduler.mongoOptionWriteConcernTimeoutMillis'"
+  },
+  {
+    "name": "org.quartz.scheduler.misfireThreshold",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.scheduler.misfireThreshold'"
+  },
+  {
+    "name": "org.quartz.scheduler.triggerTimeoutMillis",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.scheduler.triggerTimeoutMillis'"
+  },
+  {
+    "name": "org.quartz.scheduler.clusterCheckinInterval",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.scheduler.clusterCheckinInterval'"
+  },
+  {
+    "name": "org.quartz.scheduler.jobTimeoutMillis",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.scheduler.jobTimeoutMillis'"
+  },
+  {
+    "name": "org.quartz.scheduler.collectionPrefix",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.scheduler.collectionPrefix'"
+  },
+  {
+    "name": "org.quartz.scheduler.instanceName",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.scheduler.instanceName'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.mongoUri",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.mongoUri'"
+  },
+  {
+    "name": "org.quartz.jobStore.dbName",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.dbName'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.collectionPrefix",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.collectionPrefix'"
+  },
+  {
+    "name": "org.quartz.threadPool.threadCount",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.threadPool.threadCount'"
+  },
+  {
+    "name": "org.quartz.scheduler.skipUpdateCheck",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.scheduler.skipUpdateCheck'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.mongoUri",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.mongoUri'"
+  },
+  {
+    "name": "org.quartz.jobStore.mongoUri",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.mongoUri'"
+  },
+  {
+    "name": "org.quartz.jobStore.mongoUri",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.mongoUri'"
+  },
+  {
+    "name": "org.quartz.jobStore.mongoUri",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.mongoUri'"
+  },
+  {
+    "name": "org.quartz.jobStore.mongoUri",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.mongoUri'"
+  },
+  {
+    "name": "org.quartz.jobStore.mongoUri",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.mongoUri'"
+  },
+  {
+    "name": "org.quartz.jobStore.mongoUri",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.mongoUri'"
+  },
+  {
+    "name": "org.quartz.jobStore.mongoUri",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.mongoUri'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "api-package",
+    "type": "java.lang.String",
+    "description": "A description for 'api-package'"
+  },
+  {
+    "name": "application.name",
+    "type": "java.lang.String",
+    "description": "A description for 'application.name'"
+  },
+  {
+    "name": "application.description",
+    "type": "java.lang.String",
+    "description": "A description for 'application.description'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "org.quartz.jobStore.class",
+    "type": "java.lang.String",
+    "description": "A description for 'org.quartz.jobStore.class'"
+  },
+  {
+    "name": "com.novemberain.quartz.mongodb.MongoDBJobStore",
+    "type": "java.lang.String",
+    "description": "A description for 'com.novemberain.quartz.mongodb.MongoDBJobStore'"
   }
 ]}
