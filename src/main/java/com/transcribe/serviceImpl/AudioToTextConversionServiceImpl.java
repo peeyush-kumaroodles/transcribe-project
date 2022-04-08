@@ -87,9 +87,9 @@ public class AudioToTextConversionServiceImpl {
 				VideoLinks.class);
 		}
 	
-	@Scheduled(cron = " 0 59 23 * * *")
+	//@Scheduled(cron = " 0 06 19 * * *")
 	public boolean getTranscribe() {
-		List<VideoLinks> videoLinkObj = transcribeRepository.findByIsAudioTranscribe(false);
+		List<VideoLinks> videoLinkObj = transcribeRepository.findByIsAudioTranscribe(true);
 		for (VideoLinks links : videoLinkObj) {
 			String link = links.getLink();
 			System.out.println(link);

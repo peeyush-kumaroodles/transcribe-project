@@ -21,7 +21,6 @@ public class TranscribeController {
 	return ResponseEntity.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=result.json").body(result);
 	}
-	
 	@GetMapping("/video_LinkApi")
 	public ResponseEntity<?> useRestTemplate() {
 		ResponseEntity<VideoLinks> videoEntity;
@@ -31,7 +30,6 @@ public class TranscribeController {
 		}else
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
 	@GetMapping(value = "/data")
 	public ResponseEntity<?> getLink(){
 	boolean result=  audioToTextConversionServiceImpl.getTranscribe();
