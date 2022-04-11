@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.transcribe.scheduler.dto.JobDetailRequestBean;
 import com.transcribe.scheduler.dto.SchedulerResponseBean;
-import java.util.Objects;
 import java.util.Set;
 import static org.quartz.JobKey.jobKey;
 @Slf4j
@@ -19,7 +18,7 @@ public class SchedulerService {
 			String jobGroup, JobDetailRequestBean jobDetailRequestBean) {
 		SchedulerResponseBean responseBean = new SchedulerResponseBean();
 		jobDetailRequestBean.setGroup(jobGroup);
-		JobDetail jobDetail = jobDetailRequestBean.buildJobDetail();
+		JobDetail jobDetail = jobDetailRequestBean.buildJobDetail1();
 		Set<Trigger> triggersForJob = jobDetailRequestBean.buildTriggers();
 		log.info("About to save job with key - {}", jobDetail.getKey());
 		try {
@@ -36,28 +35,33 @@ public class SchedulerService {
 		}
 		return responseBean;
 	}
+
 	public SchedulerResponseBean updateJob(
 			String jobGroup, String jobName, JobDetailRequestBean jobDetailRequestBean) {
 		SchedulerResponseBean responseBean = new SchedulerResponseBean();
 		try {
-			JobDetail oldJobDetail = scheduler.getJobDetail(jobKey(jobName, jobGroup));
-			if (Objects.nonNull(oldJobDetail)) {
-				JobDataMap jobDataMap = oldJobDetail.getJobDataMap();
-				jobDataMap.put("jobType", jobDetailRequestBean.getJobType());
-				jobDataMap.put("uniqueKey", jobDetailRequestBean.getUniqueKey());
-				jobDataMap.put("data", jobDetailRequestBean.getData());
-				JobBuilder jb = oldJobDetail.getJobBuilder();
-				JobDetail newJobDetail = jb.usingJobData(jobDataMap).storeDurably().build();
-				scheduler.addJob(newJobDetail, true);
-				log.info("Updated job with key - {}", newJobDetail.getKey());
-				responseBean.setResult(jobDetailRequestBean);
-				responseBean.setResultCode(HttpStatus.CREATED);
-			}
-			log.warn("Could not find job with key - {}.{} to update", jobGroup, jobName);
+			scheduler.deleteJob(jobKey(jobName, jobGroup));
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+		responseBean= createJob(jobGroup, jobDetailRequestBean);
+		String msg = "job updated  with key - " + jobGroup + "." + jobName;
+		log.info(msg);
+		return responseBean;
+	}
+
+	public SchedulerResponseBean pauseJob(String jobGroup, String jobName) {
+		SchedulerResponseBean responseBean = new SchedulerResponseBean();
+		try {
+			scheduler.pauseJob(jobKey(jobName, jobGroup));
+			String msg = "Paused job with key - " + jobGroup + "." + jobName;
+			responseBean.setResult(msg);
+			responseBean.setResultCode(HttpStatus.OK);
+			log.info("job paused with key - {}.{} ", jobGroup, jobName);
 		} catch (SchedulerException e) {
 			String errorMsg =
 					String.format(
-							"Could not find job with key - %s.%s to update due to error -  %s",
+							"Could not find job with key - %s.%s  due to error -  %s",
 							jobGroup, jobName, e.getLocalizedMessage());
 			log.error(errorMsg);
 			responseBean.setResultCode(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -11,24 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.transcribe.serviceImpl.AudioToTextConversionServiceImpl;
 
 @Slf4j
-public class SampleJob implements Job {
+public class SampleJob1 implements Job {
 	
 	//@Autowired AudioToTextConversionServiceImpl audioToTextConversionServiceImpl;
    
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        log.info("Job triggered - Sample Job");
-        JobDataMap map = context.getMergedJobDataMap();
-        printData(map);
-       // audioToTextConversionServiceImpl.getTranscribe();
-        log.info("Job completed");
+    	//  audioToTextConversionServiceImpl.getTranscribe();
+    	System.out.println("job1 is executing :testing");
     }
 
-    private void printData(JobDataMap map) {
-        log.info(">>>>>>>>>>>>>>>>>>> START: ");
-        map.entrySet().forEach(entry -> {
-            log.info(entry.getKey() + " " + entry.getValue());
-        });
-        log.info(">>>>>>>>>>>>>>>>>>> END: ");
-    }
 }

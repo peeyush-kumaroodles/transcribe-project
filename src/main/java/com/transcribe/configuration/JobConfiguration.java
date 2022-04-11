@@ -36,7 +36,6 @@ public class JobConfiguration {
             return null;
         }
     }
-
     @Bean
     public Properties quartzProperties() throws IOException {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();

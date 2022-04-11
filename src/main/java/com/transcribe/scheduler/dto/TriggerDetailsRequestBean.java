@@ -2,8 +2,6 @@ package com.transcribe.scheduler.dto;
 
 import lombok.Data;
 import org.quartz.Trigger;
-
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.TimeZone;
 import static java.time.ZoneId.systemDefault;
@@ -15,7 +13,6 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 @Data
 public class TriggerDetailsRequestBean implements Serializable {
-    @NotBlank
     private String name;
     private String group;
     private String cron;

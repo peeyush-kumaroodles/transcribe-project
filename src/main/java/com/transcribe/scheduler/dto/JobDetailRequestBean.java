@@ -2,26 +2,23 @@ package com.transcribe.scheduler.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
+import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.Trigger;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 import static org.quartz.JobBuilder.newJob;
 @Data
 public class JobDetailRequestBean implements Serializable {
-    @NotBlank
     private String name;
     private String group;
     @JsonProperty("triggers")
     private List<TriggerDetailsRequestBean> triggerDetails = new ArrayList<>();
-   
-    @NotEmpty
     private String jobType;
-    @NotEmpty
     private String uniqueKey;
     private Map<String, Object> data = new LinkedHashMap<>();
     
@@ -68,17 +65,27 @@ public class JobDetailRequestBean implements Serializable {
         return this;
     }
 
-    public JobDetail buildJobDetail() {
+    public JobDetail buildJobDetail1() {
         JobDataMap jobDataMap = new JobDataMap(getData());
         jobDataMap.put("jobType", jobType);
         jobDataMap.put("uniqueKey", uniqueKey);
         jobDataMap.put("data", data);
-        return newJob(SampleJob.class)
+        return newJob(SampleJob1.class)
                 .withIdentity(getName(), getGroup())
                 .usingJobData(jobDataMap)
                 .build();
     }
-
+    public JobDetail buildJobDetail2() {
+        JobDataMap jobDataMap = new JobDataMap(getData());
+        jobDataMap.put("jobType", jobType);
+        jobDataMap.put("uniqueKey", uniqueKey);
+        jobDataMap.put("data", data);
+        return newJob(SampleJob2.class)
+                .withIdentity(getName(), getGroup())
+                .usingJobData(jobDataMap)
+                .build();
+    }
+    
     @JsonIgnore
     public Set<Trigger> buildTriggers() {
         return triggerDetails.stream()
