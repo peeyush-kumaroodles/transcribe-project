@@ -1,5 +1,10 @@
 package com.transcribe;
 
+import java.util.Date;
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
@@ -12,6 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableScheduling
 @EnableMongoAuditing
 public class TranscribeProjectApplication {
+	
 
 	public static void main(String[] args) {
 		SpringApplication.run(TranscribeProjectApplication.class, args);

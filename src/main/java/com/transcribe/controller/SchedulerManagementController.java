@@ -24,7 +24,7 @@ public class SchedulerManagementController {
 	private SchedulerService schedulerService;
 
 	@PostMapping(path = JOBS)
-	public ResponseEntity<SchedulerResponseBean> createJob1(@PathVariable String jobGroup,
+	public ResponseEntity<SchedulerResponseBean> createJob(@PathVariable String jobGroup,
 			@RequestBody JobDetailRequestBean jobDetailRequestBean) {
 		return new ResponseEntity<SchedulerResponseBean>(schedulerService.createJob(jobGroup, jobDetailRequestBean),
 				CREATED);
@@ -35,6 +35,11 @@ public class SchedulerManagementController {
 			@RequestBody JobDetailRequestBean jobDetailRequestBean) {
 		return new ResponseEntity<>(schedulerService.updateJob(jobGroup, jobName, jobDetailRequestBean), OK);
 	}
+	 @DeleteMapping(path = JOBS_BY_NAME)
+	    public ResponseEntity<SchedulerResponseBean> deleteJob(
+	            @PathVariable String jobGroup, @PathVariable String jobName) {
+	        return new ResponseEntity<>(schedulerService.deleteJob(jobGroup, jobName), OK);
+	    }
 	
 	 @PatchMapping(path = JOBS_PAUSE)
 	    public ResponseEntity<SchedulerResponseBean> pauseJob(

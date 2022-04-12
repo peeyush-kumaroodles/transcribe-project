@@ -35,18 +35,65 @@ public class SchedulerService {
 		}
 		return responseBean;
 	}
+//	public SchedulerResponseBean updateJob(
+//			String jobGroup, String jobName, JobDetailRequestBean jobDetailRequestBean) {
+//		SchedulerResponseBean responseBean = new SchedulerResponseBean();
+//		try {
+//			JobDetail oldJobDetail = scheduler.getJobDetail(jobKey(jobName, jobGroup));
+//			if (oldJobDetail!=null) {
+//				JobDataMap jobDataMap = oldJobDetail.getJobDataMap();
+//				jobDataMap.put("jobType", jobDetailRequestBean.getJobType());
+//				jobDataMap.put("uniqueKey", jobDetailRequestBean.getUniqueKey());
+//				jobDataMap.put("data", jobDetailRequestBean.getData());
+//				JobBuilder jb = oldJobDetail.getJobBuilder();
+//				JobDetail newJobDetail = jb.usingJobData(jobDataMap).storeDurably().build();
+//				//Set<Trigger> triggersForJob = jobDetailRequestBean.buildTriggers();
+//			//	scheduler.scheduleJob((Trigger) triggersForJob);
+//				//scheduler.addJob(newJobDetail, true);
+//				scheduler.addJob(oldJobDetail, true, true);
+//				log.info("Updated job with key - {}", newJobDetail.getKey());
+//				responseBean.setResult(jobDetailRequestBean);
+//				responseBean.setResultCode(HttpStatus.CREATED);
+//			}else
+//				log.warn("Could not find job with - {}.{} to update", jobGroup, jobName);
+//		} catch (SchedulerException e) {
+//			String errorMsg =
+//					String.format(
+//							"Could not find job with key - %s.%s to update due to error -  %s",
+//							jobGroup, jobName, e.getLocalizedMessage());
+//			log.error(errorMsg);
+//		}
+//		return responseBean;
+//	}
 
-	public SchedulerResponseBean updateJob(
-			String jobGroup, String jobName, JobDetailRequestBean jobDetailRequestBean) {
+		public SchedulerResponseBean updateJob(
+				String jobGroup, String jobName, JobDetailRequestBean jobDetailRequestBean) {
+			SchedulerResponseBean responseBean = new SchedulerResponseBean();
+			try {
+				scheduler.deleteJob(jobKey(jobName, jobGroup));
+			} catch (SchedulerException e) {
+				e.printStackTrace();
+			}
+			responseBean= createJob(jobGroup, jobDetailRequestBean);
+			String msg = "job updated  with key - " + jobGroup + "." + jobName;
+			log.info(msg);
+			return responseBean;
+		}
+	public SchedulerResponseBean deleteJob(String jobGroup, String jobName) {
 		SchedulerResponseBean responseBean = new SchedulerResponseBean();
 		try {
 			scheduler.deleteJob(jobKey(jobName, jobGroup));
+			String msg = "Deleted job with key - " + jobGroup + "." + jobName;
+			responseBean.setResult(msg);
+			responseBean.setResultCode(HttpStatus.OK);
+			log.info(msg);
 		} catch (SchedulerException e) {
-			e.printStackTrace();
+			String errorMsg =
+					String.format(
+							"Could not find job with key - %s.%s to Delete due to error -  %s",
+							jobGroup, jobName, e.getLocalizedMessage());
+			log.error(errorMsg);
 		}
-		responseBean= createJob(jobGroup, jobDetailRequestBean);
-		String msg = "job updated  with key - " + jobGroup + "." + jobName;
-		log.info(msg);
 		return responseBean;
 	}
 

@@ -21,7 +21,6 @@ public class JobDetailRequestBean implements Serializable {
     private String jobType;
     private String uniqueKey;
     private Map<String, Object> data = new LinkedHashMap<>();
-    
     public static JobDetailRequestBean buildJobDetail(JobDetail jobDetail, List<? extends Trigger> triggersOfJob) {
         List<TriggerDetailsRequestBean> triggerDetailsRequestBeanList = triggersOfJob.stream()
                 .map(TriggerDetailsRequestBean::buildTriggerDetails)
@@ -34,7 +33,6 @@ public class JobDetailRequestBean implements Serializable {
                 .setData((Map<String, Object>) jobDetail.getJobDataMap().get("data"))
                 .setTriggerDetails(triggerDetailsRequestBeanList);
     }
-
     public JobDetailRequestBean setTriggerDetails(final List<TriggerDetailsRequestBean> triggerDetails) {
         this.triggerDetails = triggerDetails;
         return this;
