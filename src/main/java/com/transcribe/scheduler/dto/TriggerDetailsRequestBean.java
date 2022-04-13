@@ -2,6 +2,8 @@ package com.transcribe.scheduler.dto;
 
 import lombok.Data;
 import org.quartz.Trigger;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.TimeZone;
 import static java.time.ZoneId.systemDefault;
@@ -12,6 +14,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Data
+@Component
 public class TriggerDetailsRequestBean implements Serializable {
     private String name;
     private String group;
@@ -52,7 +55,7 @@ public class TriggerDetailsRequestBean implements Serializable {
         throw new IllegalStateException("unsupported trigger details " + this);
     }
 
-    private String buildName() {
+    public String buildName() {
         return isEmpty(name) ? randomUUID().toString() : name;
     }
 }

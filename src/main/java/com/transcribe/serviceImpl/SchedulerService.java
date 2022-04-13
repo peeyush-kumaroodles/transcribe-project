@@ -2,23 +2,36 @@ package com.transcribe.serviceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.transcribe.scheduler.dto.JobDetailRequestBean;
 import com.transcribe.scheduler.dto.SchedulerResponseBean;
+import com.transcribe.scheduler.dto.TriggerDetailsRequestBean;
+
 import java.util.Set;
+import java.util.TimeZone;
+
+import static java.time.ZoneId.systemDefault;
+import static java.util.UUID.randomUUID;
+import static org.quartz.CronExpression.isValidExpression;
+import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobKey.jobKey;
+import static org.quartz.TriggerBuilder.newTrigger;
+import static org.springframework.util.StringUtils.isEmpty;
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class SchedulerService {
 	private final Scheduler scheduler;
+	@Autowired TriggerDetailsRequestBean detailsRequestBean;
 
 	public SchedulerResponseBean createJob(
 			String jobGroup, JobDetailRequestBean jobDetailRequestBean) {
 		SchedulerResponseBean responseBean = new SchedulerResponseBean();
 		jobDetailRequestBean.setGroup(jobGroup);
-		JobDetail jobDetail = jobDetailRequestBean.buildJobDetail1();
+		JobDetail jobDetail = jobDetailRequestBean.buildJobDetail();
 		Set<Trigger> triggersForJob = jobDetailRequestBean.buildTriggers();
 		log.info("About to save job with key - {}", jobDetail.getKey());
 		try {
@@ -35,50 +48,51 @@ public class SchedulerService {
 		}
 		return responseBean;
 	}
-//	public SchedulerResponseBean updateJob(
-//			String jobGroup, String jobName, JobDetailRequestBean jobDetailRequestBean) {
-//		SchedulerResponseBean responseBean = new SchedulerResponseBean();
-//		try {
-//			JobDetail oldJobDetail = scheduler.getJobDetail(jobKey(jobName, jobGroup));
-//			if (oldJobDetail!=null) {
-//				JobDataMap jobDataMap = oldJobDetail.getJobDataMap();
-//				jobDataMap.put("jobType", jobDetailRequestBean.getJobType());
-//				jobDataMap.put("uniqueKey", jobDetailRequestBean.getUniqueKey());
-//				jobDataMap.put("data", jobDetailRequestBean.getData());
-//				JobBuilder jb = oldJobDetail.getJobBuilder();
-//				JobDetail newJobDetail = jb.usingJobData(jobDataMap).storeDurably().build();
-//				//Set<Trigger> triggersForJob = jobDetailRequestBean.buildTriggers();
-//			//	scheduler.scheduleJob((Trigger) triggersForJob);
-//				//scheduler.addJob(newJobDetail, true);
-//				scheduler.addJob(oldJobDetail, true, true);
-//				log.info("Updated job with key - {}", newJobDetail.getKey());
-//				responseBean.setResult(jobDetailRequestBean);
-//				responseBean.setResultCode(HttpStatus.CREATED);
-//			}else
-//				log.warn("Could not find job with - {}.{} to update", jobGroup, jobName);
-//		} catch (SchedulerException e) {
-//			String errorMsg =
-//					String.format(
-//							"Could not find job with key - %s.%s to update due to error -  %s",
-//							jobGroup, jobName, e.getLocalizedMessage());
-//			log.error(errorMsg);
-//		}
-//		return responseBean;
-//	}
-
-		public SchedulerResponseBean updateJob(
-				String jobGroup, String jobName, JobDetailRequestBean jobDetailRequestBean) {
-			SchedulerResponseBean responseBean = new SchedulerResponseBean();
-			try {
-				scheduler.deleteJob(jobKey(jobName, jobGroup));
-			} catch (SchedulerException e) {
-				e.printStackTrace();
-			}
-			responseBean= createJob(jobGroup, jobDetailRequestBean);
-			String msg = "job updated  with key - " + jobGroup + "." + jobName;
-			log.info(msg);
-			return responseBean;
+	public SchedulerResponseBean updateJob(
+			String jobGroup, String jobName, JobDetailRequestBean jobDetailRequestBean) {
+		SchedulerResponseBean responseBean = new SchedulerResponseBean();
+		try {
+			JobDetail oldJobDetail = scheduler.getJobDetail(jobKey(jobName, jobGroup));
+			JobDetail jobDetail = jobDetailRequestBean.buildJobDetail();
+			
+	      //	TriggerKey	triggerKey = jobDetailRequestBean.getUniqueKey();
+			if (oldJobDetail!=null) {
+				JobDataMap jobDataMap = oldJobDetail.getJobDataMap();
+				jobDataMap.put("jobType", jobDetailRequestBean.getJobType());
+				jobDataMap.put("uniqueKey", jobDetailRequestBean.getUniqueKey());
+				jobDataMap.put("data", jobDetailRequestBean.getData());
+				JobBuilder jb = oldJobDetail.getJobBuilder();
+				JobDetail newJobDetail = jb.usingJobData(jobDataMap).storeDurably().build();
+				scheduler.addJob(newJobDetail, true);
+			  // scheduler.rescheduleJob( triggerKey,detailsRequestBean.buildTrigger());
+				//scheduler.addJob(oldJobDetail, true, true);
+				log.info("Updated job with key - {}", newJobDetail.getKey());
+				responseBean.setResult(jobDetailRequestBean);
+				responseBean.setResultCode(HttpStatus.CREATED);
+			}else
+				log.warn("Could not find job with - {}.{} to update", jobGroup, jobName);
+		} catch (SchedulerException e) {
+			String errorMsg =
+					String.format(
+							"Could not find job with key - %s.%s to update due to error -  %s",
+							jobGroup, jobName, e.getLocalizedMessage());
+			log.error(errorMsg);
 		}
+		return responseBean;
+	}
+//		public SchedulerResponseBean updateJob(
+//				String jobGroup, String jobName, JobDetailRequestBean jobDetailRequestBean) {
+//			SchedulerResponseBean responseBean = new SchedulerResponseBean();
+//			try {
+//				scheduler.deleteJob(jobKey(jobName, jobGroup));
+//			} catch (SchedulerException e) {
+//				e.printStackTrace();
+//			}
+//			responseBean= createJob(jobGroup, jobDetailRequestBean);
+//			String msg = "job updated  with key - " + jobGroup + "." + jobName;
+//			log.info(msg);
+//			return responseBean;
+//		}
 	public SchedulerResponseBean deleteJob(String jobGroup, String jobName) {
 		SchedulerResponseBean responseBean = new SchedulerResponseBean();
 		try {
@@ -93,6 +107,7 @@ public class SchedulerService {
 							"Could not find job with key - %s.%s to Delete due to error -  %s",
 							jobGroup, jobName, e.getLocalizedMessage());
 			log.error(errorMsg);
+			
 		}
 		return responseBean;
 	}

@@ -303,5 +303,10 @@
     "name": "com.novemberain.quartz.mongodb.MongoDBJobStore",
     "type": "java.lang.String",
     "description": "A description for 'com.novemberain.quartz.mongodb.MongoDBJobStore'"
+  },
+  {
+    "name": "org.springframework.beans.factory.annotation.Autowired",
+    "type": "java.lang.String",
+    "description": "A description for 'org.springframework.beans.factory.annotation.Autowired'"
   }
 ]}
