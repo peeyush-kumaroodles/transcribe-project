@@ -58,21 +58,7 @@ public class JobDetailRequestBean implements Serializable {
 		this.uniqueKey = uniqueKey;
 		return this;
 	}
-	public JobDetailRequestBean setEmail(String email) {
-		this.email = email;
-		return this;
-	}
-
-	public JobDetailRequestBean setSubject(String subject) {
-		this.subject = subject;
-		return this;
-	}
-
-	public JobDetailRequestBean setBody(String body) {
-		this.body = body;
-		return this;
-	}
-
+	
 	public JobDetailRequestBean setJobType(String jobType) {
 		this.jobType = jobType;
 		return this;
@@ -87,15 +73,16 @@ public class JobDetailRequestBean implements Serializable {
 		this.name = name;
 		return this;
 	}
-
 	public JobDetail buildJobDetail() {
 		JobDataMap jobDataMap = new JobDataMap(getData());
 		jobDataMap.put("jobType", jobType);
 		jobDataMap.put("uniqueKey", uniqueKey);
+		jobDataMap.put("subject",subject);
+		jobDataMap.put("email", email);
+		jobDataMap.put("body", body);
 		jobDataMap.put("data", data);
 		return newJob(SampleJob1.class).withIdentity(getName(), getGroup()).usingJobData(jobDataMap).build();
 	}
-
 	@JsonIgnore
 	public Set<Trigger> buildTriggers() {
 		return triggerDetails.stream().map(TriggerDetailsRequestBean::buildTrigger)

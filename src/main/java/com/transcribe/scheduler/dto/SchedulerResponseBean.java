@@ -15,22 +15,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SchedulerResponseBean {
-	private boolean success;
-	private String jobId;
-	private String message;
-	private String group;
-	private Object result;
-	private HttpStatus resultCode;
-
-	public SchedulerResponseBean(boolean success, String message) {
-		this.success = success;
-		this.message = message;
-	}
-
-	public SchedulerResponseBean(boolean success, String jobId, String jobGroup, String message) {
-		this.success = success;
-		this.jobId = jobId;
-		this.group = jobGroup;
-		this.message = message;
-	}
+	 private Object result;
+	    private HttpStatus resultCode;
 }

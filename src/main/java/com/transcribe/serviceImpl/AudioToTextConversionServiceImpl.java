@@ -1,15 +1,9 @@
 package com.transcribe.serviceImpl;
 import java.io.File;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +38,9 @@ import com.transcribe.dto.VideoLinks;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 @Service
+@Slf4j
 @EnableConfigurationProperties(AmazonS3Properties.class)
 @Data
 public class AudioToTextConversionServiceImpl {
@@ -60,47 +56,48 @@ public class AudioToTextConversionServiceImpl {
 	private String endpointUrl = "https://s3.ap-south-1.amazonaws.com";
 	private static final Logger LOGGER = LoggerFactory.getLogger(AudioToTextConversionServiceImpl.class);
 	//@Scheduled(fixedRate = 10000 ,initialDelay = 10000)
-//	@Scheduled(cron = "* 42 12 * * *")
-//	public void fetchData() {
-//		List<VideoLinks> list=transcribeRepository.findAll();
-//		for (VideoLinks videoLinks : list) {
-//			System.out.println(list);
-//		}
-//	}
-	
+	//	@Scheduled(cron = "* 42 12 * * *")
+	//	public void fetchData() {
+	//		List<VideoLinks> list=transcribeRepository.findAll();
+	//		for (VideoLinks videoLinks : list) {
+	//			System.out.println(list);
+	//		}
+	//	}
 	@Autowired
 	private RestTemplate restTemplate;
 	public ResponseEntity<VideoLinks> exchangeMethodOfRestTemplate(){
 		VideoLinks videoLink=new VideoLinks();
-		videoLink.setLink("https://message-file-upload-1.s3.ap-south-1.amazonaws.com/tWxaqygh_Fzxm_00NV_ceat_LTG45Syod2TR_Umang@Second_16022022103856.mp4");
-		videoLink.setMessageId("624af54f6815a538250f25f13");
-		videoLink.setRoomAccessKey("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MTk4MTExNjQ5MDc5NjMxNDgxZmQ3NjBlIn0.p6v4FXXz3q-Rjdm1KrJWZEu0xXNWCopabIHyE8rSzig");
-		videoLink.setRoomId("4198111649079631481fd760e");
+		videoLink.setLink("https://message-file-upload-1.s3.ap-south-1.amazonaws.com/tWxaqygh_Fz_ceat_LTG45Syod2.mp4");
+		videoLink.setMessageId("1143aa809e902754542");
+		videoLink.setRoomAccessKey("");
+		videoLink.setRoomId("1ee1101645624000759");
 		videoLink.setRoomType("CHATROOM");
-		String baseURL = "http://localhost:8080//v1/user/room/videoLink";
-		String auth = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9TVVBFUkFETUlOIiwiUk9MRV9VU0VSIiwiUk9MRV9TVVBFUl9BRE1JTiJdLCJpcCI6IjA6MDowOjA6MDowOjA6MSIsInVzZXJJZCI6MTAxMCwiZW1haWwiOiJwZWV5dXNoLmt1bWFyQG9vZGxlcy5pbyIsInVzZXJuYW1lIjoicGVleXVzaCIsImp0aSI6ImQzMjNiY2I4LWI0OTgtNDVkYy05NDRiLWFhNjk0ZGJkMTZjMyIsImV4cCI6MTY0OTI0OTUzMCwiaXNzIjoiQ29tbXVuaWNhdGlvbiBTY2FmZm9sZCJ9.9W_aMMfY_Vn93DKavhGH-JeODOn4b1InxhXSN0WGX68";
+		String baseURL = "";
+		String auth = "";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setBearerAuth(auth);
 		HttpEntity<Object> httpEntity = new HttpEntity<>(videoLink, headers);
 		return restTemplate.exchange(baseURL, HttpMethod.POST, httpEntity,
 				VideoLinks.class);
-		}
-	
+	}
+
 	//@Scheduled(cron = " 0 06 19 * * *")
 	public boolean getTranscribe() {
 		System.out.println("inside transcribe");
 		List<VideoLinks> videoLinkObj = transcribeRepository.findByIsAudioTranscribe(false);
-		for (VideoLinks links : videoLinkObj) {
-			String link = links.getLink();
-			System.out.println(link);
-			String fileName = link.substring(link.lastIndexOf('/') + 1);
-			System.out.println(fileName);
-			String fileTranscriptionURL = convertAudioToText(fileName);
+		if(!videoLinkObj.isEmpty()) {
+			for (VideoLinks links : videoLinkObj) {
+				String link = links.getLink();
+				System.out.println(link);
+				String fileName = link.substring(link.lastIndexOf('/') + 1);
+				System.out.println(fileName);
+				String fileTranscriptionURL = convertAudioToText(fileName);
 				links.setAudioTranscribe(true);
 				links.setTranscribedFileLink(fileTranscriptionURL);
 				transcribeRepository.save(links);
 				return true;
+			}
 		}
 		return false;
 	}  
@@ -120,7 +117,7 @@ public class AudioToTextConversionServiceImpl {
 		startTranscriptionJobRequest.withMediaFormat("mp4");
 		Settings settings = new Settings();
 		settings.withMaxSpeakerLabels(10).withShowSpeakerLabels(true);
-	//	startTranscriptionJobRequest.withMedia(media).withMediaSampleRateHertz(48000);
+		//	startTranscriptionJobRequest.withMedia(media).withMediaSampleRateHertz(48000);
 		startTranscriptionJobRequest.withSettings(settings);
 		transcribe.startTranscriptionJob(startTranscriptionJobRequest);
 		GetTranscriptionJobRequest jobRequest = new GetTranscriptionJobRequest();
@@ -150,7 +147,7 @@ public class AudioToTextConversionServiceImpl {
 		String result = response.charset("UTF-8").bodyText();
 		Gson gson = new Gson();
 		return gson.fromJson(result, AmazonTranscription.class);
-	
+
 	}
 	public String uploadTranscribeJSONToTextFile(AmazonTranscription transcription) {
 		try {

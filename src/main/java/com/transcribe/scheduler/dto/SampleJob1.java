@@ -18,6 +18,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
+import com.transcribe.serviceImpl.AudioToTextConversionServiceImpl;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -30,33 +32,30 @@ public class SampleJob1 extends QuartzJobBean {
 	@Autowired
 	private MailProperties mailProperties;
 
-	// @Autowired AudioToTextConversionServiceImpl audioToTextConversionServiceImpl;
+	 @Autowired AudioToTextConversionServiceImpl audioToTextConversionServiceImpl;
 
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 		System.out.println("job1 is executing");
-
+		//audioToTextConversionServiceImpl.exchangeMethodOfRestTemplate();
 		JobDataMap jobDataMap = context.getMergedJobDataMap();
 		String subject = jobDataMap.getString("subject");
 		String body = jobDataMap.getString("body");
 		String recipientEmail = jobDataMap.getString("email");
 		System.out.println("done");
 
-		sendMail(mailProperties.getUsername(), recipientEmail, subject, body);
-
+		//sendMail(mailProperties.getUsername(), recipientEmail, subject, body);
 	}
 
 	private void sendMail(String fromEmail, String toEmail, String subject, String body) {
 		try {
 			logger.info("Sending Email to {}", toEmail);
 			MimeMessage message = mailSender.createMimeMessage();
-
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, StandardCharsets.UTF_8.toString());
 			messageHelper.setSubject(subject);
 			messageHelper.setText(body, true);
 			messageHelper.setFrom(fromEmail);
 			messageHelper.setTo(toEmail);
-
 			mailSender.send(message);
 		} catch (MessagingException ex) {
 			logger.error("Failed to send email to {}", toEmail);
