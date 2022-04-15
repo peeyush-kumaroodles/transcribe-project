@@ -1,4 +1,6 @@
 package com.transcribe.controller;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +26,9 @@ public class TranscribeController {
 	
 	@GetMapping("/video_LinkApi")
 	public ResponseEntity<?> useRestTemplate() {
-		ResponseEntity<VideoLinks> videoEntity;
-		videoEntity = audioToTextConversionServiceImpl.exchangeMethodOfRestTemplate();
-		if(videoEntity!=null) {
-			return new ResponseEntity<String>(HttpStatus.OK);
+		ResponseEntity<Object>  list= audioToTextConversionServiceImpl.getAllVidepoLink();
+		if(list!=null) {
+			return new ResponseEntity<String>(list.toString(),HttpStatus.OK);
 		}else
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}

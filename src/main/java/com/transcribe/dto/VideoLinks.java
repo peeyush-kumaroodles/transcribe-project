@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 @Data
-@Document(value = "video_links")
+//@Document(value = "video_links")
 public class VideoLinks {
 	@Id
 	String link;

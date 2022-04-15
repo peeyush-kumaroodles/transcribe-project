@@ -111,6 +111,7 @@ public class SchedulerService {
 		}
 		return responseBean;
 	}
+	
 
 	public SchedulerResponseBean pauseJob(String jobGroup, String jobName) {
 		SchedulerResponseBean responseBean = new SchedulerResponseBean();

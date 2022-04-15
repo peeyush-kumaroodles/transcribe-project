@@ -37,7 +37,7 @@ public class SampleJob1 extends QuartzJobBean {
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 		System.out.println("job1 is executing");
-		//audioToTextConversionServiceImpl.exchangeMethodOfRestTemplate();
+	//	audioToTextConversionServiceImpl.getAllVidepoLink();
 		JobDataMap jobDataMap = context.getMergedJobDataMap();
 		String subject = jobDataMap.getString("subject");
 		String body = jobDataMap.getString("body");

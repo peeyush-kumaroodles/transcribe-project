@@ -43,7 +43,6 @@ public class JobDetailRequestBean implements Serializable {
 				.setData((Map<String, Object>) jobDetail.getJobDataMap().get("data"))
 				.setTriggerDetails(triggerDetailsRequestBeanList);
 	}
-
 	public JobDetailRequestBean setTriggerDetails(final List<TriggerDetailsRequestBean> triggerDetails) {
 		this.triggerDetails = triggerDetails;
 		return this;
