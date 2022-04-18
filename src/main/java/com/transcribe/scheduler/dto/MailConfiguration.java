@@ -9,12 +9,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 @EnableAutoConfiguration
-//@Configuration
 public class MailConfiguration {
  
     @Autowired
     private Environment env;
- 
+    
     @Bean
     public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

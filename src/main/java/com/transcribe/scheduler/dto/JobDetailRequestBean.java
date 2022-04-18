@@ -1,5 +1,4 @@
 package com.transcribe.scheduler.dto;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -10,13 +9,9 @@ import org.quartz.Trigger;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import static org.quartz.JobBuilder.newJob;
-
 @Data
 public class JobDetailRequestBean implements Serializable {
 	private String name;
@@ -34,7 +29,7 @@ public class JobDetailRequestBean implements Serializable {
 	private String uniqueKey;
 	private Map<String, Object> data = new LinkedHashMap<>();
 
-	public static JobDetailRequestBean buildJobDetail(JobDetail jobDetail, List<? extends Trigger> triggersOfJob) {
+	public static JobDetailRequestBean buildJobDetail(JobDetail jobDetail, List<Trigger> triggersOfJob) {
 		List<TriggerDetailsRequestBean> triggerDetailsRequestBeanList = triggersOfJob.stream()
 				.map(TriggerDetailsRequestBean::buildTriggerDetails).collect(Collectors.toList());
 		return new JobDetailRequestBean().setName(jobDetail.getKey().getName()).setGroup(jobDetail.getKey().getGroup())

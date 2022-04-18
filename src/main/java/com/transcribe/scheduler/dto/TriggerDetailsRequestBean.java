@@ -12,7 +12,6 @@ import static org.quartz.CronExpression.isValidExpression;
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 import static org.springframework.util.StringUtils.isEmpty;
-
 @Data
 @Component
 public class TriggerDetailsRequestBean implements Serializable {

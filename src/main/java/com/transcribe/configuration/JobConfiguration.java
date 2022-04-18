@@ -1,5 +1,4 @@
 package com.transcribe.configuration;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -8,10 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
-
 import java.io.IOException;
 import java.util.Properties;
-
 @Slf4j
 @Configuration
 public class JobConfiguration {

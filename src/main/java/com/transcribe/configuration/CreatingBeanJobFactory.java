@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class CreatingBeanJobFactory extends SpringBeanJobFactory
         implements ApplicationContextAware {
     private transient AutowireCapableBeanFactory beanFactory;
+   
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

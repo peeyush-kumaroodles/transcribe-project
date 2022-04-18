@@ -54,18 +54,11 @@ public class AudioToTextConversionServiceImpl {
 	private String bucketName = "";
 	private String endpointUrl = "https://s3.ap-south-1.amazonaws.com";
 	private static final Logger LOGGER = LoggerFactory.getLogger(AudioToTextConversionServiceImpl.class);
-	//@Scheduled(fixedRate = 10000 ,initialDelay = 10000)
-	//	@Scheduled(cron = "* 42 12 * * *")
-	//	public void fetchData() {
-	//		List<VideoLinks> list=transcribeRepository.findAll();
-	//		for (VideoLinks videoLinks : list) {
-	//			System.out.println(list);
-	//		}
-	//	}
+
 	@Autowired
 	private RestTemplate restTemplate;
-	
-	
+
+
 	public ResponseEntity<VideoLinks> exchangeMethodOfRestTemplate(){
 		VideoLinks videoLink=new VideoLinks();
 		videoLink.setLink("https://message-file-upload-1.s3.ap-south-1.amazonaws.com/tWxaqygh_Fz_ceat_LTG45Syod2.mp4");
@@ -82,22 +75,17 @@ public class AudioToTextConversionServiceImpl {
 		return restTemplate.exchange(baseURL, HttpMethod.POST, httpEntity,
 				VideoLinks.class);
 	}
-	
+
 	public ResponseEntity<Object> getAllVidepoLink(){
 		String baseURL="http://localhost:8080/v1/chat/videoLink";
-		String auth="eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9TVVBFUkFETUlOIiwiUk9MRV9VU0VSIiwiUk9MRV9TVVBFUl9BRE1JTiJdLCJpcCI6IjA6MDowOjA6MDowOjA6MSIsInVzZXJJZCI6MTAxMCwiZW1haWwiOiJwZWV5dXNoLmt1bWFyQG9vZGxlcy5pbyIsInVzZXJuYW1lIjoicGVleXVzaCIsImp0aSI6ImFlZTU0ZDEzLTU5MWMtNGMzZC1iOWIzLTgxNzU0NDBmYjk1MCIsImV4cCI6MTY1MDA2ODEwOCwiaXNzIjoiQ29tbXVuaWNhdGlvbiBTY2FmZm9sZCJ9.GBuIv0lTaLp745oJSHSvdqA2u6BYirrgbgeFyX7vuas";
+		String auth=" ";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setBearerAuth(auth);
 		HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
-		VideoLinks links=new VideoLinks();
-	System.out.println(links.getLink());
-	
-	return restTemplate.exchange(baseURL, HttpMethod.GET, httpEntity,
-			Object.class);
+		return restTemplate.exchange(baseURL, HttpMethod.GET, httpEntity,
+				Object.class);
 	}
-
-	//@Scheduled(cron = " 0 06 19 * * *")
 	public boolean getTranscribe() {
 		System.out.println("inside transcribe");
 		List<VideoLinks> videoLinkObj = transcribeRepository.findByIsAudioTranscribe(false);
@@ -140,6 +128,7 @@ public class AudioToTextConversionServiceImpl {
 		jsonToText = getTranscribedFileUri(fileName, jobRequest, settings, transcribe, jobRequest, transcription);
 		return jsonToText;
 	}
+	
 	public String getTranscribedFileUri(String fileName, GetTranscriptionJobRequest jobRequest, Settings settings,
 			AmazonTranscribe transcribe, GetTranscriptionJobRequest request, AmazonTranscription transcription) {
 		String uploadTranscribeJSONFile = null;
@@ -156,13 +145,11 @@ public class AudioToTextConversionServiceImpl {
 		uploadTranscribeJSONFile = uploadTranscribeJSONToTextFile(transcription);
 		return uploadTranscribeJSONFile;
 	}
-
 	private AmazonTranscription downloadFromLink(String uri) {
 		HttpResponse response = HttpRequest.get(uri).send();
 		String result = response.charset("UTF-8").bodyText();
 		Gson gson = new Gson();
 		return gson.fromJson(result, AmazonTranscription.class);
-
 	}
 	public String uploadTranscribeJSONToTextFile(AmazonTranscription transcription) {
 		try {

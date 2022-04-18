@@ -16,7 +16,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @ComponentScan("com.transcribe")
 @EnableSwagger2
-//@EnableScheduling
 @EnableMongoAuditing
 public class TranscribeProjectApplication {
 	

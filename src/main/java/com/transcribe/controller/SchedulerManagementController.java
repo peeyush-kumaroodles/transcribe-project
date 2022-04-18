@@ -1,18 +1,12 @@
 package com.transcribe.controller;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.transcribe.scheduler.dto.JobDetailRequestBean;
 import com.transcribe.scheduler.dto.SchedulerResponseBean;
 import com.transcribe.serviceImpl.SchedulerService;
-
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
-
 @RestController
 @RequestMapping("/api/v1/scheduler")
 public class SchedulerManagementController {
